@@ -13,7 +13,7 @@ async function loadData() {
   const lines = text.trim().split(/\r?\n/);
   if (lines.length <= 1) return [];
 
-  const header = lines[0].split(","); // not used here but kept for clarity
+  const header = lines[0].split("\t"); // not used here but kept for clarity
   const dataLines = lines.slice(1);
 
   return dataLines.map(line => {
