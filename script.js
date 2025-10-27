@@ -57,14 +57,24 @@ async function initMap() {
     .sort((a, b) => a.dist - b.dist);
 
   sorted.forEach((p, i) => {
-  const numberIcon = L.divIcon({
-    className: 'number-icon',
-    html: `<div class="marker-number">${i + 1}</div>`,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
+  const numberedDropIcon = L.divIcon({
+    className: 'numbered-drop-icon',
+    html: `
+      <svg width="30" height="40" viewBox="0 0 30 40" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#007bff" stroke="white" stroke-width="2"
+          d="M15 0 
+             C7 12, 7 25, 15 40 
+             C23 25, 23 12, 15 0 Z"/>
+        <text x="15" y="24" font-size="16" fill="white" font-weight="bold" text-anchor="middle" alignment-baseline="middle">1</text>
+      </svg>
+    `,
+    iconSize: [30, 40],
+    iconAnchor: [15, 40]
   });
+  
+  const marker = L.marker([p.lat, p.lng], { icon: numberedDropIcon }).addTo(map);
 
-  const marker = L.marker([p.lat, p.lng], { icon: numberIcon }).addTo(map);
+    
   const priceText = Number.isFinite(p.price) ? `${p.price} €` : "—";
   marker.bindPopup(`<b>${i + 1}. ${p.name}</b><br>${priceText}<br>
     <a href="${p.link}" target="_blank" rel="noopener">Google Maps</a>`);
