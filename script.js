@@ -21,12 +21,13 @@ async function loadData() {
 
   return {
     name: cols[0] || "Unknown",
-    lat: cols[6],
-    lng: cols[7],
+    lat: parseFloat(cols[6]),
+    lng: parseFloat(cols[7]),
     price: cols[2] ? parseFloat(cols[2]) : NaN,
     link: cols[3] || "",
-    avg_rating: cols[4] ? parseFloat(cols[5]) : 0,
-    n_ratings: cols[5] ? parseInt(cols[6], 10) : 0
+    avg_rating: cols[4] ? parseFloat(cols[4]) : 0,
+    n_ratings: cols[5] ? parseInt(cols[5], 10) : 0
+
   };
 });
 
