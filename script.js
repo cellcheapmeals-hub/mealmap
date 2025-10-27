@@ -37,9 +37,9 @@ async function initMap() {
     attribution: '© OpenStreetMap'
   }).addTo(map);
 
-  // Circles for walk times
-  L.circle([lab.lat, lab.lng], { radius: 400, color: 'blue', fillOpacity: 0.05 }).addTo(map);
-  L.circle([lab.lat, lab.lng], { radius: 800, color: 'green', fillOpacity: 0.05 }).addTo(map);
+  // Draw walking circles (~80 m/min)
+  L.circle([lab.lat, lab.lng], { radius: 400, color: 'blue', fillOpacity: 0.05 }).addTo(map); // 5 min
+  L.circle([lab.lat, lab.lng], { radius: 800, color: 'green', fillOpacity: 0.05 }).addTo(map); // 10 min
 
   // Sort by distance
   const sorted = places.map(p => ({
@@ -47,29 +47,14 @@ async function initMap() {
     dist: map.distance([lab.lat, lab.lng], [p.lat, p.lng])
   })).sort((a, b) => a.dist - b.dist);
 
-  // Add markers
   sorted.forEach((p, i) => {
     const marker = L.marker([p.lat, p.lng]).addTo(map);
-    const starText = stars(p.rating);
-    marker.bindPopup(`<b>${i + 1}. ${p.name}</b><br>${p.price} €<br>${starText}<br>
+    marker.bindPopup(`<b>${i + 1}. ${p.name}</b><br>${p.price} €<br>
       <a href="${p.link}" target="_blank">Google Maps</a>`);
   });
 
-  // === Create legend ===
-  const legend = L.control({ position: "topright" });
-  legend.onAdd = function () {
-    const div = L.DomUtil.create("div", "legend");
-    div.innerHTML = "<b>Places by distance</b><br>";
-    sorted.forEach((p, i) => {
-      div.innerHTML += `${i + 1}. ${p.name} – ${stars(p.rating)}<br>`;
-    });
-    return div;
-  };
-  legend.addTo(map);
-
-  // === QR Codes ===
+  // QR code for linktree
   new QRCode(document.getElementById("qrcode"), window.location.href.replace("index.html", "linktree.html"));
-  new QRCode(document.getElementById("sheetqr"), sheetEditURL);
 }
 
 initMap();
