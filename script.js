@@ -19,15 +19,17 @@ async function loadData() {
   return dataLines.map(line => {
     const cols = line.split(",").map(s => s.trim());
 
+  
     return {
       name: cols[0] || "Unknown",
-      lat: cols[1],
-      lng: cols[2],
+      lat: cols[1] ? parseFloat(cols[1]) : NaN,
+      lng: cols[2] ? parseFloat(cols[2]) : NaN,
       price: cols[3] ? parseFloat(cols[3]) : NaN,
       link: cols[4] || "",
       avg_rating: cols[5] ? parseFloat(cols[5]) : 0,
       n_ratings: cols[6] ? parseInt(cols[6], 10) : 0
     };
+
   });
 }
 
