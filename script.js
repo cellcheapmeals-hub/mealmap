@@ -57,22 +57,21 @@ async function initMap() {
     .sort((a, b) => a.dist - b.dist);
 
   sorted.forEach((p, i) => {
-  const numberedDropIcon = L.divIcon({
-    className: 'numbered-drop-icon',
+  const numberedStandardIcon = L.divIcon({
+    className: 'numbered-standard-icon',
     html: `
-      <svg width="30" height="40" viewBox="0 0 30 40" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#007bff" stroke="white" stroke-width="2"
-          d="M15 0 
-             C7 12, 7 25, 15 40 
-             C23 25, 23 12, 15 0 Z"/>
-        <text x="15" y="24" font-size="16" fill="white" font-weight="bold" text-anchor="middle" alignment-baseline="middle">1</text>
-      </svg>
+      <div style="position: relative; width: 25px; height: 41px;">
+        <img src="https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png" style="width: 25px; height: 41px;" />
+        <div style="position: absolute; top: 6px; left: 0; width: 100%; text-align: center; color: red; font-weight: bold; font-size: 16px; pointer-events: none;">
+          1
+        </div>
+      </div>
     `,
-    iconSize: [30, 40],
-    iconAnchor: [15, 40]
+    iconSize: [25, 41],
+    iconAnchor: [12, 41]
   });
-  
-  const marker = L.marker([p.lat, p.lng], { icon: numberedDropIcon }).addTo(map);
+    
+  const marker = L.marker([p.lat, p.lng], { icon: numberedStandardIcon }).addTo(map);
 
     
   const priceText = Number.isFinite(p.price) ? `${p.price} €` : "—";
