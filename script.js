@@ -19,23 +19,10 @@ async function loadData() {
   return dataLines.map(line => {
     const cols = line.split(",").map(s => s.trim());
 
-    // Handle two possible formats:
-    // - coords in one column like "48.2,16.36" in cols[1]
-    // - coords in two separate columns: cols[1] = lat, cols[2] = lng
-    let lat, lng;
-    if (cols[1] && cols[1].includes(",")) {
-      const parts = cols[1].split(",").map(s => s.trim());
-      lat = parseFloat(parts[0]);
-      lng = parseFloat(parts[1]);
-    } else {
-      lat = parseFloat(cols[1]);
-      lng = parseFloat(cols[2]);
-    }
-
     return {
       name: cols[0] || "Unknown",
-      lat: lat,
-      lng: lng,
+      lat: cols[1],
+      lng: cols[2],
       price: cols[3] ? parseFloat(cols[3]) : NaN,
       link: cols[4] || "",
       avg_rating: cols[5] ? parseFloat(cols[5]) : 0,
