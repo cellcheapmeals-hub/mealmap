@@ -29,7 +29,7 @@ async function loadData() {
     lng: parseFloat(cols[7])
   };
 });
-
+}
 
 
 // === INIT MAP ===
