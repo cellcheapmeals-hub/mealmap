@@ -11,13 +11,13 @@ async function loadData() {
     const [lat, lng] = r[1].split(",").map(Number);
 
     return {
-      name: r[0],            // Name
-      lat: lat,              // Latitude
-      lng: lng,              // Longitude
-      price: parseFloat(r[2]),       // Price
-      link: r[3],            // GoogleLink
-      avg_rating: parseFloat(r[4] || 0), // avg_rating (optional)
-      n_ratings: parseInt(r[5] || 0)    // n_ratings (optional)
+      name: cols[0] || "Unknown",
+      lat: cols[1] ? parseFloat(cols[1]) : NaN,
+      lng: cols[2] ? parseFloat(cols[2]) : NaN,
+      price: cols[3] ? parseFloat(cols[3]) : NaN,
+      link: cols[4] || "",
+      avg_rating: cols[5] ? parseFloat(cols[5]) : 0,
+      n_ratings: cols[6] ? parseInt(cols[6], 10) : 0
     };
   });
 }
