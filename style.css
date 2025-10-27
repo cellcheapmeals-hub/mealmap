@@ -1,0 +1,24 @@
+body {
+  font-family: sans-serif;
+  margin: 20px;
+  line-height: 1.5;
+}
+
+#map {
+  height: 500px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 0.5em;
+}
+
+#qrcode {
+  margin-top: 10px;
+}
