@@ -2,7 +2,7 @@
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPXZ6M20Zh0YZkq60NtJSYZ2rv3J-hravmeyeiaTOwtprq1EjrU4St0rQCXvYiUCNp5Sy47AMAoxEW/pub?gid=0&single=true&output=csv";
 
 // Lab coordinates
-const lab = { name: "TU Wien Biomedical Lab", lat: 48.1987, lng: 16.3695 };
+const lab = { name: "Cell Chip Group", lat: 48.20131190157764, lng: 16.36347258815447 };
 
 // === LOAD DATA FROM SHEET ===
 async function loadData() {
