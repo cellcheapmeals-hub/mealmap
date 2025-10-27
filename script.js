@@ -22,8 +22,8 @@ async function loadData() {
   
     return {
       name: cols[0] || "Unknown",
-      lat: cols[1] ? parseFloat(cols[1]) : NaN,
-      lng: cols[2] ? parseFloat(cols[2]) : NaN,
+      lat: cols[7] ? parseFloat(cols[7]) : NaN,
+      lng: cols[8] ? parseFloat(cols[8]) : NaN,
       price: cols[3] ? parseFloat(cols[3]) : NaN,
       link: cols[4] || "",
       avg_rating: cols[5] ? parseFloat(cols[5]) : 0,
