@@ -8,17 +8,25 @@ const lab = { name: "TU Wien Biomedical Lab", lat: 48.1987, lng: 16.3695 };
 async function loadData() {
   const res = await fetch(sheetURL);
   const text = await res.text();
-  const rows = text.trim().split("\n").map(r => r.split(","));
+  const rows = text.trim().split("\n").map(r => r.split(",")); // split CSV by comma
   const [header, ...data] = rows;
 
-  return data.map(r => ({
-    name: r[0],
-    lat: parseFloat(r[1]),
-    lng: parseFloat(r[2]),
-    price: parseFloat(r[3]),
-    link: r[4]
-  }));
+  return data.map(r => {
+    // Split "Coordinates" column into lat & lng
+    const [lat, lng] = r[1].split(",").map(Number);
+
+    return {
+      name: r[0],            // Name
+      lat: lat,              // Latitude
+      lng: lng,              // Longitude
+      price: parseFloat(r[2]),       // Price
+      link: r[3],            // GoogleLink
+      avg_rating: parseFloat(r[4] || 0), // avg_rating (optional)
+      n_ratings: parseInt(r[5] || 0)    // n_ratings (optional)
+    };
+  });
 }
+
 
 // === INIT MAP ===
 async function initMap() {
