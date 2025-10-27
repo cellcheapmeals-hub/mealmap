@@ -57,27 +57,25 @@ async function initMap() {
     .sort((a, b) => a.dist - b.dist);
 
   sorted.forEach((p, i) => {
-  const numberedStandardIcon = L.divIcon({
-    className: 'numbered-standard-icon',
-    html: `
-      <div style="position: relative; width: 25px; height: 41px;">
-        <img src="https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png" style="width: 25px; height: 41px;" />
-        <div style="position: absolute; top: 6px; left: 0; width: 100%; text-align: center; color: red; font-weight: bold; font-size: 16px; pointer-events: none;">
-          1
-        </div>
-      </div>
-    `,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
+    // Standard marker
+    const standardMarker = L.marker([p.lat, p.lng]).addTo(map);
+  
+    // Number overlay marker (transparent, just number centered)
+    const numberMarker = L.marker([p.lat, p.lng], {
+      icon: L.divIcon({
+        className: 'number-overlay',
+        html: `<div>${i + 1}</div>`,
+        iconSize: [25, 25],
+        iconAnchor: [12, 12],
+        popupAnchor: [0, -12]
+      }),
+      interactive: false // so it doesn't capture clicks, pass through to base marker if needed
+    }).addTo(map);
+  
+    const priceText = Number.isFinite(p.price) ? `${p.price} €` : "—";
+    standardMarker.bindPopup(`<b>${i + 1}. ${p.name}</b><br>${priceText}<br>
+      <a href="${p.link}" target="_blank" rel="noopener">Google Maps</a>`);
   });
-    
-  const marker = L.marker([p.lat, p.lng], { icon: numberedStandardIcon }).addTo(map);
-
-    
-  const priceText = Number.isFinite(p.price) ? `${p.price} €` : "—";
-  marker.bindPopup(`<b>${i + 1}. ${p.name}</b><br>${priceText}<br>
-    <a href="${p.link}" target="_blank" rel="noopener">Google Maps</a>`);
-});
 
   // QR code for linktree
   new QRCode(document.getElementById("qrcode"), window.location.href.replace("index.html", "linktree.html"));
