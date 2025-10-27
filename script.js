@@ -24,9 +24,9 @@ async function loadData() {
     price: cols[2] ? parseFloat(cols[2]) : NaN,
     link: cols[3] || "",
     avg_rating: cols[4] ? parseFloat(cols[4]) : 0,
-    n_ratings: cols[5] ? parseInt(cols[5], 10) : 0
+    n_ratings: cols[5] ? parseInt(cols[5], 10) : 0,
     lat: parseFloat(cols[6]),
-    lng: parseFloat(cols[7]),
+    lng: parseFloat(cols[7])
   };
 });
 
