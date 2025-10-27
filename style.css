@@ -4,19 +4,39 @@ body {
   line-height: 1.5;
 }
 
-#map {
-  height: 500px;
-  width: 100%;
-  margin-bottom: 20px;
+/* Map + legend container */
+#map-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-ul {
+/* Map: square */
+#map {
+  width: 600px;
+  height: 600px;
+  border: 1px solid #ccc;
+}
+
+/* Legend styling */
+#legend {
+  width: 250px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+#places-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-li {
-  margin-bottom: 0.5em;
+#places-list li {
+  margin-bottom: 8px;
 }
 
 #qrcode {
