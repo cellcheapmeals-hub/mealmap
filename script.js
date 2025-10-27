@@ -57,25 +57,39 @@ async function initMap() {
     .sort((a, b) => a.dist - b.dist);
 
   sorted.forEach((p, i) => {
-    // Standard marker
-    const standardMarker = L.marker([p.lat, p.lng]).addTo(map);
-  
-    // Number overlay marker (transparent, just number centered)
-    const numberMarker = L.marker([p.lat, p.lng], {
-      icon: L.divIcon({
-        className: 'number-overlay',
-        html: `<div>${i + 1}</div>`,
-        iconSize: [25, 25],
-        iconAnchor: [12, 12],
-        popupAnchor: [0, -12]
-      }),
-      interactive: false // so it doesn't capture clicks, pass through to base marker if needed
-    }).addTo(map);
-  
-    const priceText = Number.isFinite(p.price) ? `${p.price} €` : "—";
-    standardMarker.bindPopup(`<b>${i + 1}. ${p.name}</b><br>${priceText}<br>
-      <a href="${p.link}" target="_blank" rel="noopener">Google Maps</a>`);
-  });
+  const standardMarker = L.marker([p.lat, p.lng]).addTo(map);
+
+  const numberMarker = L.marker([p.lat, p.lng], {
+    icon: L.divIcon({
+      className: 'number-overlay',
+      html: `<div>${i + 1}</div>`,
+      iconSize: [25, 25],
+      iconAnchor: [12, 12],
+      popupAnchor: [0, -12]
+    }),
+    interactive: false
+  }).addTo(map);
+
+  const priceText = Number.isFinite(p.price) ? `${p.price} €` : "—";
+
+  // Create stars string (★ for filled, ☆ for empty)
+  const fullStars = Math.round(p.avg_rating || 0);
+  const stars = "★".repeat(fullStars) + "☆".repeat(5 - fullStars);
+  const ratingText = p.avg_rating
+    ? `${stars} (${p.n_ratings || 0})`
+    : "No rating";
+
+  // Combine all info into popup HTML
+  const popupHTML = `
+    <b>${i + 1}. ${p.name}</b><br>
+    ${priceText}<br>
+    ${ratingText}<br>
+    <a href="${p.link}" target="_blank" rel="noopener">Google Maps</a>
+  `;
+
+  standardMarker.bindPopup(popupHTML);
+});
+
 
   // QR code for linktree
   new QRCode(document.getElementById("qrcode"), window.location.href.replace("index.html", "linktree.html"));
