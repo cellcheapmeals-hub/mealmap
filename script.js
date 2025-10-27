@@ -57,11 +57,18 @@ async function initMap() {
     .sort((a, b) => a.dist - b.dist);
 
   sorted.forEach((p, i) => {
-    const marker = L.marker([p.lat, p.lng]).addTo(map);
-    const priceText = Number.isFinite(p.price) ? `${p.price} €` : "—";
-    marker.bindPopup(`<b>${i + 1}. ${p.name}</b><br>${priceText}<br>
-      <a href="${p.link}" target="_blank" rel="noopener">Google Maps</a>`);
+  const numberIcon = L.divIcon({
+    className: 'number-icon',
+    html: `<div class="marker-number">${i + 1}</div>`,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41]
   });
+
+  const marker = L.marker([p.lat, p.lng], { icon: numberIcon }).addTo(map);
+  const priceText = Number.isFinite(p.price) ? `${p.price} €` : "—";
+  marker.bindPopup(`<b>${i + 1}. ${p.name}</b><br>${priceText}<br>
+    <a href="${p.link}" target="_blank" rel="noopener">Google Maps</a>`);
+});
 
   // QR code for linktree
   new QRCode(document.getElementById("qrcode"), window.location.href.replace("index.html", "linktree.html"));
