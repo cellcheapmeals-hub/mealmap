@@ -17,21 +17,19 @@ async function loadData() {
   const dataLines = lines.slice(1);
 
   return dataLines.map(line => {
-    const cols = line.split(",").map(s => s.trim());
+  const cols = line.split("\t").map(s => s.trim());
 
-  
-    return {
-      name: cols[0] || "Unknown",
-      lat: cols[7],
-      lng: cols[8],
-      price: cols[3] ? parseFloat(cols[3]) : NaN,
-      link: cols[4] || "",
-      avg_rating: cols[5] ? parseFloat(cols[5]) : 0,
-      n_ratings: cols[6] ? parseInt(cols[6], 10) : 0
-    };
+  return {
+    name: cols[0] || "Unknown",
+    lat: cols[6],
+    lng: cols[7],
+    price: cols[2] ? parseFloat(cols[2]) : NaN,
+    link: cols[3] || "",
+    avg_rating: cols[4] ? parseFloat(cols[5]) : 0,
+    n_ratings: cols[5] ? parseInt(cols[6], 10) : 0
+  };
+});
 
-  });
-}
 
 
 // === INIT MAP ===
