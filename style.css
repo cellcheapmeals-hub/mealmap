@@ -23,3 +23,15 @@ li {
   margin-top: 10px;
 }
 
+.number-icon {
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  line-height: 25px;
+  width: 25px;
+  height: 25px;
+  border: 2px solid white;
+  box-shadow: 0 0 2px #000;
+}
