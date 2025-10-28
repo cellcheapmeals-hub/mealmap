@@ -1,5 +1,10 @@
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPXZ6M20Zh0YZkq60NtJSYZ2rv3J-hravmeyeiaTOwtprq1EjrU4St0rQCXvYiUCNp5Sy47AMAoxEW/pub?gid=0&single=true&output=tsv";
 
+// Lab coordinates
+const lab = { name: "Cell Chip Group", lat: 48.20131190157764, lng: 16.36347258815447 };
+const origin = L.latLng(lab.lat, lab.lng);
+
+
 // === LOAD DATA FROM SHEET ===
 async function loadData() {
   const res = await fetch(sheetURL);
@@ -28,13 +33,20 @@ async function loadData() {
 }
 
 async function buildList() {
+  const places = await loadData();
   const list = document.getElementById("list");
-  const data = await loadData();
 
-  // Sort alphabetically
-  data.sort((a, b) => a.name.localeCompare(b.name));
+  // Sort by distance. Use L.latLng.distanceTo for robust distance calculation.
+  const sorted = places
+    .filter(p => Number.isFinite(p.lat) && Number.isFinite(p.lng)) // filter out bad rows
+    .map(p => ({
+      ...p,
+      dist: L.latLng(p.lat, p.lng).distanceTo(origin)
+    }))
+    .sort((a, b) => a.dist - b.dist);
 
-  data.forEach(p => {
+
+  places.forEach(p => {
     const li = document.createElement("li");
     li.innerHTML = `<a href="${p.link}" target="_blank">${p.name}</a> – ${p.price} €`;
     list.appendChild(li);
