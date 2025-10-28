@@ -46,7 +46,7 @@ async function buildList() {
     .sort((a, b) => a.dist - b.dist);
 
 
-  places.forEach(p => {
+  sorted.forEach(p => {
     const li = document.createElement("li");
     li.innerHTML = `<a href="${p.link}" target="_blank">${p.name}</a> – ${p.price} €`;
     list.appendChild(li);
