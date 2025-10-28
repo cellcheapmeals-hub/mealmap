@@ -2,8 +2,21 @@ const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPXZ6M20Zh0YZ
 
 // Lab coordinates
 const lab = { name: "Cell Chip Group", lat: 48.20131190157764, lng: 16.36347258815447 };
-const origin = L.latLng(lab.lat, lab.lng);
 
+
+
+// Calculate distance
+function distance(lat1, lon1, lat2, lon2) {
+  const R = 6371000; // Earth radius in meters
+  const toRad = x => (x * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+    Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 
 // === LOAD DATA FROM SHEET ===
 async function loadData() {
@@ -41,7 +54,7 @@ async function buildList() {
     .filter(p => Number.isFinite(p.lat) && Number.isFinite(p.lng)) // filter out bad rows
     .map(p => ({
       ...p,
-      dist: L.latLng(p.lat, p.lng).distanceTo(origin)
+      dist: distance(lab.lat, lab.lng, p.lat, p.lng)
     }))
     .sort((a, b) => a.dist - b.dist);
 
