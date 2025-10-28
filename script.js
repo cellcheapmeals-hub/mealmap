@@ -38,8 +38,10 @@ async function initMap() {
   console.log("Parsed places:", places); // debug: inspect parsed data in console
 
   const map = L.map('map').setView([lab.lat, lab.lng], 16);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap'
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap &copy; CARTO',
+    subdomains: 'abcd',
+    maxZoom: 19
   }).addTo(map);
 
   // Draw walking circles (~80 m/min)
