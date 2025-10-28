@@ -37,7 +37,7 @@ async function initMap() {
   const places = await loadData();
   console.log("Parsed places:", places); // debug: inspect parsed data in console
 
-  const map = L.map('map').setView([lab.lat, lab.lng], 16);
+  const map = L.map('map').setView([lab.lat, lab.lng], 8);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; OpenStreetMap &copy; CARTO',
     subdomains: 'abcd',
