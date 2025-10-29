@@ -1,8 +1,20 @@
 // === CONFIG ===
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPXZ6M20Zh0YZkq60NtJSYZ2rv3J-hravmeyeiaTOwtprq1EjrU4St0rQCXvYiUCNp5Sy47AMAoxEW/pub?gid=0&single=true&output=tsv";
+const googleformURL = "https://docs.google.com/forms/d/e/1FAIpQLScpqLpmlC3kCDIxOuPzinEKpljgQeTXc22EjfFew_nDt4rvhQ/viewform?usp=dialog";
+const mapURL = "https://cellcheapmeals-hub.github.io/mealmap/";
 
 // Lab coordinates
 const lab = { name: "Cell Chip Group", lat: 48.20131190157764, lng: 16.36347258815447 };
+
+// Create QR code in a container element
+function createQRCode(container, text) {
+  new QRCode(container, {
+    text: text,
+    width: 120,
+    height: 120,
+    correctLevel: QRCode.CorrectLevel.H
+  });
+}
 
 // === LOAD DATA FROM SHEET ===
 async function loadData() {
@@ -31,6 +43,10 @@ async function loadData() {
   });
 }
 
+// Generate QR codes into container divs
+createQRCode(document.querySelector('#qrcode1 .qrcode-container'), window.location.href.replace("index.html", "linktree.html"));
+createQRCode(document.querySelector('#qrcode2 .qrcode-container'), googleformURL);
+createQRCode(document.querySelector('#qrcode3 .qrcode-container'), mapURL);
 
 // === INIT MAP ===
 async function initMap() {
@@ -93,8 +109,7 @@ async function initMap() {
 });
 
 
-  // QR code for linktree
-  new QRCode(document.getElementById("qrcode"), window.location.href.replace("index.html", "linktree.html"));
+
 }
 
 initMap();
