@@ -49,7 +49,7 @@ async function initMap() {
   const places = await loadData();
   console.log("Parsed places:", places); // debug: inspect parsed data in console
 
-  const map = L.map('map').setView([lab.lat, lab.lng],14);
+  const map = L.map('map').setView([lab.lat, lab.lng],15);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; OpenStreetMap &copy; CARTO',
     subdomains: 'abcd',
@@ -114,9 +114,49 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log("qrcode2 container:", document.querySelector('#qrcode2 .qrcode-container'));
   console.log("qrcode3 container:", document.querySelector('#qrcode3 .qrcode-container'));
 
-  createQRCode(document.querySelector('#qrcode1 .qrcode-container'), window.location.href.replace("index.html", "linktree.html"));
-  createQRCode(document.querySelector('#qrcode2 .qrcode-container'), googleformURL);
-  createQRCode(document.querySelector('#qrcode3 .qrcode-container'), mapURL);
+  // QR codes are generated below once the DOM is ready; avoid creating them twice.
+
+  const items = [
+    { id: 'qrcode1', url: 'https://linktr.ee/yourname' },
+    { id: 'qrcode2', url: 'https://example.com/review' },
+    { id: 'qrcode3', url: 'https://example.com' }
+  ];
+
+  const isHttp = /^https?:\/\//i.test(location.href);
+
+  items.forEach(it => {
+    const el = document.getElementById(it.id);
+    if (!el) return;
+    const container = el.querySelector('.qrcode-container');
+    if (!container) return;
+    // clear any existing content
+    container.innerHTML = '';
+
+    // create QR code with consistent size
+    new QRCode(container, {
+      text: it.url,
+      width: 84,
+      height: 84,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H
+    });
+
+    // link activation: only add href when served over http(s)
+    const a = el.querySelector('.qrcode-label a');
+    if (a) {
+      const dataUrl = a.getAttribute('data-url') || it.url;
+      if (isHttp) {
+        a.setAttribute('href', dataUrl);
+        a.setAttribute('target', '_blank');
+        a.classList.remove('disabled');
+      } else {
+        a.removeAttribute('href');
+        a.classList.add('disabled');
+        a.title = 'Open in browser to use link';
+      }
+    }
+  });
 
   initMap();
 });
