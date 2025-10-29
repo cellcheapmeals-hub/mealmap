@@ -35,3 +35,28 @@ li {
   border: 2px solid white;
   box-shadow: 0 0 2px #000;
 }
+
+.qr-overlay {
+  position: absolute;
+  width: 140px;
+  max-width: 140px;
+  background: white;
+  border: 1px solid #ccc;
+  z-index: 1000;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+.qrcode-container {
+  width: 120px;
+  height: 120px;
+}
+
+.qrcode-label {
+  margin-top: 8px;
+  text-align: center;
+}
