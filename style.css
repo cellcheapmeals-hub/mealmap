@@ -114,3 +114,97 @@ li {
   }
 }
 
+/* Origin marker fallback styling */
+.leaflet-div-icon.origin-div-icon {
+  background: transparent;
+  border: none;
+}
+
+.origin-dot {
+  width: 18px;
+  height: 18px;
+  background: #0b6efd;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+
+/* Optional: ensure image icon doesn't get extra background */
+.leaflet-marker-icon.origin-icon {
+  background: transparent;
+}
+
+/* Circle label styling for 5/10 minute markers */
+.leaflet-marker-icon.circle-label {
+  background: transparent;
+  border: none;
+}
+
+.circle-label div {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  color: #222;
+  pointer-events: none;
+}
+
+/* Plain labels that sit on the curve of the circle */
+.leaflet-marker-icon.circle-label-plain {
+  background: transparent;
+  border: none;
+}
+
+.circle-label-plain div {
+  font-size: 13px;
+  font-weight: 700;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.circle-label-plain svg {
+  display: block;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.circle-label-plain text {
+  paint-order: stroke; /* ensure fill is visible over map */
+}
+
+/* Star rating display (supports half stars) */
+.stars {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.stars .star {
+  display: inline-block;
+  position: relative;
+  color: #ccc; /* empty star color */
+  width: 1em;
+  text-align: center;
+}
+
+/* base star symbol (gray) comes from the element content '★' */
+.stars .star::before {
+  content: '★';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: gold;
+  width: 0;
+  overflow: hidden;
+}
+
+.stars .star.full::before { width: 100%; }
+.stars .star.half::before { width: 50%; }
+
+/* ensure accessibility and spacing */
+.stars .star { margin-right: 2px; }
+

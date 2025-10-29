@@ -2,6 +2,7 @@
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPXZ6M20Zh0YZkq60NtJSYZ2rv3J-hravmeyeiaTOwtprq1EjrU4St0rQCXvYiUCNp5Sy47AMAoxEW/pub?gid=0&single=true&output=tsv";
 const googleformURL = "https://docs.google.com/forms/d/e/1FAIpQLScpqLpmlC3kCDIxOuPzinEKpljgQeTXc22EjfFew_nDt4rvhQ/viewform?usp=dialog";
 const mapURL = "https://cellcheapmeals-hub.github.io/mealmap/";
+const linktreeURL = "https://cellcheapmeals-hub.github.io/mealmap/linktree.html";
 
 // Lab coordinates
 const lab = { name: "Cell Chip Group", lat: 48.20131190157764, lng: 16.36347258815447 };
@@ -44,6 +45,35 @@ async function loadData() {
 }
 
 
+// Create origin marker: try loading an image, fall back to a styled div icon
+function addOriginMarker(map) {
+  const imgUrl = 'images/origin.png';
+  const popupHtml = `<b>${lab.name}</b>`;
+
+  const img = new Image();
+  img.onload = function() {
+    const originIcon = L.icon({
+      iconUrl: imgUrl,
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+      popupAnchor: [0, -14]
+    });
+    L.marker([lab.lat, lab.lng], { icon: originIcon }).addTo(map).bindPopup(popupHtml);
+  };
+  img.onerror = function() {
+    // fallback: circular div icon
+    const originDiv = L.divIcon({
+      className: 'origin-div-icon',
+      html: `<div class="origin-dot"></div>`,
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+      popupAnchor: [0, -14]
+    });
+    L.marker([lab.lat, lab.lng], { icon: originDiv }).addTo(map).bindPopup(popupHtml);
+  };
+  img.src = imgUrl;
+}
+
 // === INIT MAP ===
 async function initMap() {
   const places = await loadData();
@@ -57,8 +87,35 @@ async function initMap() {
   }).addTo(map);
 
   // Draw walking circles (~80 m/min)
-  L.circle([lab.lat, lab.lng], { radius: 400, color: 'blue', fillOpacity: 0.05 }).addTo(map); // 5 min
-  L.circle([lab.lat, lab.lng], { radius: 800, color: 'green', fillOpacity: 0.05 }).addTo(map); // 10 min
+  const circle5 = L.circle([lab.lat, lab.lng], { radius: 400, color: 'blue', fillOpacity: 0.05 }).addTo(map); // 5 min
+  const circle10 = L.circle([lab.lat, lab.lng], { radius: 800, color: 'green', fillOpacity: 0.05 }).addTo(map); // 10 min
+
+  // Helper: convert meters + bearing to latitude/longitude offset (approx)
+  function metersToLatLng(lat, lng, meters, bearingDeg) {
+    const br = bearingDeg * Math.PI / 180;
+    const latRad = lat * Math.PI / 180;
+    const deltaLat = (meters * Math.cos(br)) / 110574; // meters per degree latitude
+    const deltaLng = (meters * Math.sin(br)) / (111320 * Math.cos(latRad)); // meters per degree longitude
+    return [lat + deltaLat, lng + deltaLng];
+  }
+
+  // Simple boxed labels on top (north) of the circles
+  const labelOffset = 12; // meters outside the circle
+  const label5Pos = metersToLatLng(lab.lat, lab.lng, 400 + labelOffset, 0); // north
+  const label10Pos = metersToLatLng(lab.lat, lab.lng, 800 + labelOffset, 0);
+
+  const boxedLabelIcon = (text) => L.divIcon({
+    className: 'circle-label',
+    html: `<div>${text}</div>`,
+    iconSize: [60, 24],
+    iconAnchor: [30, 12]
+  });
+
+  L.marker(label5Pos, { icon: boxedLabelIcon('5 min'), interactive: false, keyboard: false }).addTo(map);
+  L.marker(label10Pos, { icon: boxedLabelIcon('10 min'), interactive: false, keyboard: false }).addTo(map);
+
+  // add origin marker (image if available, otherwise styled fallback)
+  addOriginMarker(map);
 
   // Sort by distance. Use L.latLng.distanceTo for robust distance calculation.
   const origin = L.latLng(lab.lat, lab.lng);
@@ -84,14 +141,24 @@ async function initMap() {
     interactive: false
   }).addTo(map);
 
-  const priceText = Number.isFinite(p.price) ? `${p.price} €` : "—";
+  const priceText = priceCategory(p.price);
 
-  // Create stars string (★ for filled, ☆ for empty)
-  const fullStars = Math.round(p.avg_rating || 0);
-  const stars = "★".repeat(fullStars) + "☆".repeat(5 - fullStars);
+  function starsHTML(avg, n) {
+    const full = Math.floor(avg);
+    const half = (avg - full) >= 0.5 ? 1 : 0;
+    const empty = 5 - full - half;
+    let html = '<span class="stars">';
+    for (let i = 0; i < full; i++) html += '<span class="star full">★</span>';
+    if (half) html += '<span class="star half">★</span>';
+    for (let i = 0; i < empty; i++) html += '<span class="star">★</span>';
+    html += '</span>';
+    if (avg) html += ` (${n || 0})`;
+    return html;
+  }
+
   const ratingText = p.avg_rating
-    ? `${stars} (${p.n_ratings || 0})`
-    : "No rating";
+    ? starsHTML(p.avg_rating, p.n_ratings)
+    : 'No rating';
 
   // Combine all info into popup HTML
   const popupHTML = `
@@ -109,17 +176,26 @@ async function initMap() {
 
 }
 
+// Price category helper
+function priceCategory(price) {
+  if (!Number.isFinite(price)) return '—';
+  if (price <= 10) return '≤10€';
+  if (price < 13) return '<13€';
+  if (price < 15) return '<15€';
+  return '≥15€';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   console.log("qrcode1 container:", document.querySelector('#qrcode1 .qrcode-container'));
   console.log("qrcode2 container:", document.querySelector('#qrcode2 .qrcode-container'));
   console.log("qrcode3 container:", document.querySelector('#qrcode3 .qrcode-container'));
 
-  // QR codes are generated below once the DOM is ready; avoid creating them twice.
+  
 
   const items = [
-    { id: 'qrcode1', url: 'https://linktr.ee/yourname' },
-    { id: 'qrcode2', url: 'https://example.com/review' },
-    { id: 'qrcode3', url: 'https://example.com' }
+    { id: 'qrcode1', url: linktreeURL },
+    { id: 'qrcode2', url: googleformURL },
+    { id: 'qrcode3', url: mapURL }
   ];
 
   const isHttp = /^https?:\/\//i.test(location.href);
