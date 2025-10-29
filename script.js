@@ -43,10 +43,6 @@ async function loadData() {
   });
 }
 
-// Generate QR codes into container divs
-createQRCode(document.querySelector('#qrcode1 .qrcode-container'), window.location.href.replace("index.html", "linktree.html"));
-createQRCode(document.querySelector('#qrcode2 .qrcode-container'), googleformURL);
-createQRCode(document.querySelector('#qrcode3 .qrcode-container'), mapURL);
 
 // === INIT MAP ===
 async function initMap() {
@@ -106,6 +102,13 @@ async function initMap() {
   `;
 
   standardMarker.bindPopup(popupHTML);
+
+  // Generate QR codes into container divs
+  createQRCode(document.querySelector('#qrcode1 .qrcode-container'), window.location.href.replace("index.html", "linktree.html"));
+  createQRCode(document.querySelector('#qrcode2 .qrcode-container'), googleformURL);
+  createQRCode(document.querySelector('#qrcode3 .qrcode-container'), mapURL);
+
+    
 });
 
 
