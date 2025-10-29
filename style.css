@@ -1,9 +1,12 @@
+:root{--accent:#8aa6ff;--accent-dark:#7da0ff;--muted:#6b7280;--bg:#fbfbff;--card:#ffffff}
+
 body {
-  font-family: sans-serif;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   margin: 20px;
   line-height: 1.5;
 }
 
+/* Map container stays full-bleed but inherit the font */
 #map {
   min-height: 80vh;
   width: 100%;
@@ -43,22 +46,23 @@ li {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: sans-serif;
-  font-size: 8px;
+  font-family: inherit;
+  font-size: 12px;
 }
 
 
 .qrcode-container {
-  width: 84px;
-  height: 84px;
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: white;
   padding: 6px;
-  border-radius: 6px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-  flex: 0 0 84px; /* fixed size */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(16,24,40,0.06);
+  flex: 0 0 64px; /* fixed size */
+  border: 1px solid rgba(138,166,255,0.12);
 }
 
 .qrcode-label {
@@ -67,18 +71,18 @@ li {
 }
 
 .qrcode-label a {
-  color: #0b6efd;
+  color: var(--accent);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .qrcode-label a.disabled {
-  color: #6c757d;
+  color: #9aa0a6;
   pointer-events: none;
   text-decoration: line-through;
 }
 
-/* QR panel styles */
+/* QR panel update to match pastel card style */
 #qr-panel {
   position: absolute;
   top: 10px;
@@ -88,8 +92,9 @@ li {
   gap: 12px;
   background: rgba(255, 255, 255, 0.95);
   padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(16,24,40,0.06);
+  border: 1px solid rgba(138,166,255,0.10);
   z-index: 1000;
 }
 
@@ -114,7 +119,35 @@ li {
   }
 }
 
-/* Origin marker fallback styling */
+/* Popup styling to match minimal look */
+.leaflet-popup-content-wrapper {
+  font-family: inherit;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(16,24,40,0.08);
+  border: 1px solid rgba(138,166,255,0.08);
+}
+
+.leaflet-popup-tip {
+  background: white;
+}
+
+.leaflet-popup-content {
+  color: #0f172a;
+  font-size: 14px;
+}
+
+/* Number badge for markers (map numbers) to match index badge style */
+.number-overlay div {
+  background: transparent;
+  color: #000;
+  border-radius: 0;
+  padding: 0;
+  font-weight: 700;
+  box-shadow: none;
+  text-shadow: 0 0 4px rgba(255,255,255,0.9); /* subtle halo for contrast */
+}
+
+/* Origin marker fallback styling (match accent) */
 .leaflet-div-icon.origin-div-icon {
   background: transparent;
   border: none;
@@ -123,10 +156,10 @@ li {
 .origin-dot {
   width: 18px;
   height: 18px;
-  background: #0b6efd;
+  background: var(--accent);
   border: 3px solid white;
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 
 /* Optional: ensure image icon doesn't get extra background */
@@ -207,4 +240,7 @@ li {
 
 /* ensure accessibility and spacing */
 .stars .star { margin-right: 2px; }
+
+/* stars styling already present; ensure they use font-family */
+.stars, .lt-stars { font-family: inherit; }
 
