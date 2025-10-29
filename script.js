@@ -10,8 +10,8 @@ const lab = { name: "Cell Chip Group", lat: 48.20131190157764, lng: 16.363472588
 function createQRCode(container, text) {
   new QRCode(container, {
     text: text,
-    width: 120,
-    height: 120,
+    width: 50,
+    height: 50,
     correctLevel: QRCode.CorrectLevel.H
   });
 }
@@ -110,12 +110,15 @@ async function initMap() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Generate QR codes in fixed overlay divs
+  console.log("qrcode1 container:", document.querySelector('#qrcode1 .qrcode-container'));
+  console.log("qrcode2 container:", document.querySelector('#qrcode2 .qrcode-container'));
+  console.log("qrcode3 container:", document.querySelector('#qrcode3 .qrcode-container'));
+
   createQRCode(document.querySelector('#qrcode1 .qrcode-container'), window.location.href.replace("index.html", "linktree.html"));
   createQRCode(document.querySelector('#qrcode2 .qrcode-container'), googleformURL);
   createQRCode(document.querySelector('#qrcode3 .qrcode-container'), mapURL);
 
-  // Initialize the map after QR codes are generated
   initMap();
 });
+
 
