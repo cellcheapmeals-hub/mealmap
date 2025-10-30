@@ -185,8 +185,6 @@ async function buildList(filters = currentFilters) {
     const veggieHTML = p.veggie ? '<div class="lt-veggie">🥬 veggie</div>' : '';
     const cuisineHTML = p.cuisine && p.cuisine.trim() ? `<div class="lt-cuisine">🍴 ${p.cuisine}</div>` : '';
 
-    const commentHTML = p.comment ? `<div class="lt-comment-right"><div class="lt-comment">${p.comment}</div></div>` : '';
-    
     li.innerHTML = `
       <a class="lt-link" href="${p.link}" target="_blank" rel="noopener">
         <div class="lt-card">
@@ -194,15 +192,19 @@ async function buildList(filters = currentFilters) {
           <div class="lt-content">
             <div class="lt-name">${p.name}</div>
             <div class="lt-meta">
-              <div class="lt-rating">${ratingHTML}</div>
-              <div class="lt-price">${priceText}</div>
-              <div class="lt-distance">${distanceText}</div>
-              ${veganHTML}
-              ${veggieHTML}
-              ${cuisineHTML}
+              <div class="lt-meta-row">
+                <div class="lt-rating">${ratingHTML}</div>
+                <div class="lt-price">${priceText}</div>
+                <div class="lt-distance">${distanceText}</div>
+              </div>
+              <div class="lt-meta-row">
+                ${veggieHTML}
+                ${veganHTML}
+                ${cuisineHTML}
+              </div>
+              ${p.comment ? `<div class="lt-meta-row"><div class="lt-comment-inline">${p.comment}</div></div>` : ''}
             </div>
           </div>
-          ${commentHTML}
         </div>
       </a>
     `;

@@ -342,11 +342,18 @@ h1 {
 
 .lt-meta {
   display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-top: 6px;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
   font-size: 13px;
   color: var(--muted);
+}
+
+.lt-meta-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .lt-price {
@@ -401,6 +408,17 @@ h1 {
   border-radius: 999px;
   font-size: 12px;
   font-style: italic;
+}
+
+.lt-comment-inline {
+  background: #f3f4f6;
+  color: #6b7280;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-style: italic;
+  flex: 1;
+  min-width: 0;
 }
 
 .lt-rating {
