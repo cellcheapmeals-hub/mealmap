@@ -1,5 +1,5 @@
 // === CONFIG ===
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPXZ6M20Zh0YZkq60NtJSYZ2rv3J-hravmeyeiaTOwtprq1EjrU4St0rQCXvYiUCNp5Sy47AMAoxEW/pub?gid=0&single=true&output=tsv";
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPXZ6M20Zh0YZkq60NtJSYZ2rv3J-hravmeyeiaTOwtprq1EjrU4St0rQCXvYiUCNp5Sy47AMAoxEW/pub?gid=656287312&single=true&output=tsv";
 const googleformURL = "https://docs.google.com/forms/d/e/1FAIpQLScpqLpmlC3kCDIxOuPzinEKpljgQeTXc22EjfFew_nDt4rvhQ/viewform?usp=dialog";
 const mapURL = "https://cellcheapmeals-hub.github.io/mealmap/";
 const linktreeURL = "https://cellcheapmeals-hub.github.io/mealmap/linktree.html";
