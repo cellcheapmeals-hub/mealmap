@@ -53,7 +53,8 @@ async function loadData() {
       comment: cols[8] || "",
       vegan: cols[9] === "TRUE",
       veggie: cols[10] === "TRUE",
-      cuisine: cols[11] || ""
+      cashonly: cols[11] === "TRUE",
+      cuisine: cols[12] || ""
     };
   });
 }
@@ -183,6 +184,7 @@ async function buildList(filters = currentFilters) {
     const ratingHTML = p.avg_rating ? starsHTML(p.avg_rating, p.n_ratings) : '<span class="nr">No rating</span>';
     const veganHTML = p.vegan ? '<div class="lt-vegan">🌱 vegan</div>' : '';
     const veggieHTML = p.veggie ? '<div class="lt-veggie">🥬 veggie</div>' : '';
+    const cashonlyHTML = p.cashonly ? '<div class="lt-cashonly">💵 cash only</div>' : '';
     const cuisineHTML = p.cuisine && p.cuisine.trim() ? `<div class="lt-cuisine">🍴 ${p.cuisine}</div>` : '';
 
     li.innerHTML = `
@@ -200,6 +202,7 @@ async function buildList(filters = currentFilters) {
               <div class="lt-meta-row">
                 ${veggieHTML}
                 ${veganHTML}
+                ${cashonlyHTML}
                 ${cuisineHTML}
               </div>
               ${p.comment ? `<div class="lt-meta-row"><div class="lt-comment-inline">${p.comment}</div></div>` : ''}

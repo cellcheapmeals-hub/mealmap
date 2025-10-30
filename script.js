@@ -39,7 +39,12 @@ async function loadData() {
       avg_rating: cols[4] ? parseFloat(cols[4]) : 0,
       n_ratings: cols[5] ? parseInt(cols[5], 10) : 0,
       lat: parseFloat(cols[6]),
-      lng: parseFloat(cols[7])
+      lng: parseFloat(cols[7]),
+      comment: cols[8] || "",
+      vegan: cols[9] === "TRUE",
+      veggie: cols[10] === "TRUE",
+      cashonly: cols[11] === "TRUE",
+      cuisine: cols[12] || ""
     };
   });
 }
@@ -160,11 +165,21 @@ async function initMap() {
     ? starsHTML(p.avg_rating, p.n_ratings)
     : 'No rating';
 
+  // Generate tags HTML
+  const tags = [];
+  if (p.vegan) tags.push('<span class="popup-tag lt-vegan">🌱 vegan</span>');
+  if (p.veggie) tags.push('<span class="popup-tag lt-veggie">🥬 veggie</span>');
+  if (p.cashonly) tags.push('<span class="popup-tag lt-cashonly">💵 cash only</span>');
+  if (p.cuisine && p.cuisine.trim()) tags.push(`<span class="popup-tag lt-cuisine">🍴 ${p.cuisine}</span>`);
+  
+  const tagsHTML = tags.length > 0 ? `<div class="popup-tags">${tags.join(' ')}</div>` : '';
+
   // Combine all info into popup HTML
   const popupHTML = `
     <b>${i + 1}. ${p.name}</b><br>
     ${priceText}<br>
     ${ratingText}<br>
+    ${tagsHTML}
     <a href="${p.link}" target="_blank" rel="noopener">Google Maps</a>
   `;
 
